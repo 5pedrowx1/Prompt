@@ -130,7 +130,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblCurrentDirectory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 6</value>
+    <value>5, 7</value>
   </data>
   <data name="lblCurrentDirectory.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 19</value>
@@ -190,7 +190,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>751, 3</value>
+    <value>749, 4</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 25</value>
@@ -226,7 +226,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMinimize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>685, 3</value>
+    <value>683, 4</value>
   </data>
   <data name="btnMinimize.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 25</value>
@@ -262,7 +262,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMaximize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>718, 3</value>
+    <value>716, 4</value>
   </data>
   <data name="btnMaximize.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 25</value>

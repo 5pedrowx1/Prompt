@@ -13,6 +13,7 @@ namespace Prompt
         private readonly Settings settingsControl;
         private readonly AppSettings appSettings;
         private bool isViewingFileContent;
+        private bool isEditingFileContent;
         private bool dragging;
         private Point dragCursorPoint;
         private Point dragFormPoint;
@@ -113,19 +114,61 @@ namespace Prompt
                 HandleCtrlV();
                 return true;
             }
+            if (keyData == (Keys.Control | Keys.D))
+            {
+                HandleCtrlD();
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                HandleCtrlS();
+                return true;
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void HandleCtrlZ()
         {
-            if (isViewingFileContent)
+            if (isViewingFileContent | isEditingFileContent)
             {
                 ClearScreen();
                 isViewingFileContent = false;
+                isEditingFileContent = false;
             }
             else if (commandProcessor.IsTaskRunning)
             {
                 commandProcessor.CancelOperation();
+            }
+        }
+
+        private void HandleCtrlD()
+        {
+            if (isViewingFileContent)
+            {
+                isEditingFileContent = true;
+                txtCommandOutput.ReadOnly = false;
+            }
+        }
+
+        private void HandleCtrlS()
+        {
+            if (isEditingFileContent)
+            {
+                string filePath = commandProcessor.GetCurrentFilePath();
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    try
+                    {
+                        File.WriteAllText(filePath, txtCommandOutput.Text);
+                        Logger.Log($"Alterações salvas em {filePath}.");
+                        isEditingFileContent = false;
+                        txtCommandOutput.ReadOnly = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log($"Erro ao salvar o arquivo: {ex.Message}");
+                    }
+                }
             }
         }
 
@@ -153,7 +196,14 @@ namespace Prompt
 
         public void SetViewingFileContent(bool isViewing) => isViewingFileContent = isViewing;
 
-        private void TxtCommandOutput_KeyDown(object sender, KeyEventArgs e) => txtCommandInput.Focus();
+        private void TxtCommandOutput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (isEditingFileContent)
+            {
+                return;
+            }
+            txtCommandInput.Focus();
+        }
 
         private void BtnClose_Click(object sender, EventArgs e)
         {
@@ -230,8 +280,8 @@ namespace Prompt
 
         private new void MouseWheel(object sender, MouseEventArgs e)
         {
-            int scrollAmount = e.Delta > 0 ? SB_LINEUP : SB_LINEDOWN;
-            SendMessage(txtCommandOutput.Handle, WM_VSCROLL, scrollAmount, 0);
+            int scrollAmount = e.Delta > 10 ? SB_LINEUP : SB_LINEDOWN;
+            SendMessage(txtCommandOutput.Handle, WM_VSCROLL, scrollAmount, 10);
         }
 
         protected override void WndProc(ref Message m)

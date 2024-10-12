@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
 namespace Prompt
@@ -164,7 +165,7 @@ namespace Prompt
         }
 
         #endregion
-        private System.Windows.Forms.Label lblCurrentDirectory;
+        public System.Windows.Forms.Label lblCurrentDirectory;
         private System.Windows.Forms.Panel pnlTitleBar;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnMinimize;

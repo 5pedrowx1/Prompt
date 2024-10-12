@@ -2,10 +2,10 @@
 using System.IO;
 
 
-//Provides the erros to the "application.log" file so you can know what happen
+//Provides the erros to the "Prompt.log" file so you can know what happen
 public static class Logger
 {
-    private static readonly string logFilePath = "application.log";
+    private static readonly string logFilePath = "Prompt.log";
 
     public static void Log(string message)
     {

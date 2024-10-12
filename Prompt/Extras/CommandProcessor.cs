@@ -16,10 +16,16 @@ namespace Prompt
         private readonly Form1 form;
         private readonly HistoryControl historyControl;
         private string currentDirectory;
+        private string filePath;
         private bool isTaskRunning = false;
         private readonly object lockObject = new object();
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly CommandDescriptions commandDescriptions = new CommandDescriptions();
+
+        public string GetCurrentFilePath()
+        {
+            return filePath;
+        }
 
         public bool IsTaskRunning
         {
@@ -175,44 +181,45 @@ namespace Prompt
             {
                 string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
                 form.AppendColoredText("Data atual: " + currentDate + Environment.NewLine, Color.FromArgb(128, 255, 128));
+                return;
             }
-            else
-            {
-                try
-                {
-                    if (DateTime.TryParseExact(arg, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime newDate))
-                    {
-                        SYSTEMTIME st = new SYSTEMTIME
-                        {
-                            wYear = (ushort)newDate.Year,
-                            wMonth = (ushort)newDate.Month,
-                            wDay = (ushort)newDate.Day,
-                            wHour = 0,
-                            wMinute = 0,
-                            wSecond = 0,
-                            wMilliseconds = 0
-                        };
 
-                        if (SetSystemTime(ref st))
-                        {
-                            form.AppendColoredText("Data do sistema alterada para: " + newDate.ToString("yyyy-MM-dd") + Environment.NewLine, Color.FromArgb(128, 255, 128));
-                        }
-                        else
-                        {
-                            form.AppendColoredText("Erro: Falha ao alterar a data do sistema." + Environment.NewLine, Color.Red);
-                        }
+            try
+            {
+                if (DateTime.TryParseExact(arg, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime newDate))
+                {
+                    DateTime currentTime = DateTime.UtcNow;
+
+                    SYSTEMTIME st = new SYSTEMTIME
+                    {
+                        wYear = (ushort)newDate.Year,
+                        wMonth = (ushort)newDate.Month,
+                        wDay = (ushort)newDate.Day,
+                        wHour = (ushort)currentTime.Hour,
+                        wMinute = (ushort)currentTime.Minute,
+                        wSecond = (ushort)currentTime.Second,
+                        wMilliseconds = (ushort)currentTime.Millisecond
+                    };
+
+                    if (SetSystemTime(ref st))
+                    {
+                        form.AppendColoredText("Data do sistema alterada para: " + newDate.ToString("yyyy-MM-dd") + " " + currentTime.ToString("HH:mm:ss") + " UTC" + Environment.NewLine, Color.FromArgb(128, 255, 128));
+                        Logger.Log("Data do sistema alterada para: " + newDate.ToString("yyyy-MM-dd"));
                     }
                     else
                     {
-                        form.AppendColoredText("Erro: Formato de data inválido. Use o formato yyyy-MM-dd." + Environment.NewLine, Color.Red);
+                        form.AppendColoredText("Erro: Falha ao alterar a data do sistema. Tente Executar como administrador." + Environment.NewLine, Color.Red);
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    form.AppendColoredText("Erro ao definir a data. Veija application.log " + Environment.NewLine, Color.Red);
-                    form.AppendColoredText("Detalhes: " + ex.ToString() + Environment.NewLine, Color.Red);
-                    Logger.LogError("Erro ao Definit a data: " + ex.Message);
+                    form.AppendColoredText("Erro: Formato de data inválido. Use o formato yyyy-MM-dd." + Environment.NewLine, Color.Red);
                 }
+            }
+            catch (Exception ex)
+            {
+                form.AppendColoredText("Erro ao definir a data. Veja application.log" + Environment.NewLine, Color.Red);
+                Logger.LogError("Erro ao definir a data: " + ex.Message);
             }
         }
 
@@ -558,14 +565,14 @@ namespace Prompt
 
         private void DisplayFileContent(string fileName)
         {
-            string filePath = Path.Combine(currentDirectory, fileName);
+            filePath = Path.Combine(currentDirectory, fileName);
             try
             {
                 if (File.Exists(filePath))
                 {
                     string content = File.ReadAllText(filePath);
                     form.ClearScreen();
-                    form.AppendColoredText("Conteúdo do arquivo: " + fileName + Environment.NewLine, Color.Yellow);
+               
                     form.AppendColoredText(content + Environment.NewLine, Color.FromArgb(128, 255, 128));
                     form.SetViewingFileContent(true);
                 }
