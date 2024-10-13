@@ -24,7 +24,7 @@ Se você está procurando uma alternativa mais poderosa e flexível ao cmd, o Pr
 
 Para instalar o Prompt, siga estas etapas:
 
-1. Baixe o instalador mais recente da seção [Releases](link-para-releases).
+1. Baixe o instalador mais recente da seção [Releases](https://github.com/PedrogamerY/Prompt/releases/)
 2. Execute o instalador e siga as instruções na tela.
 3. Após a instalação, abra o Prompt e comece a usar!
 
@@ -47,15 +47,15 @@ Contribuições são bem-vindas! Se você deseja ajudar a melhorar o Prompt, sig
 
 ## Licença
 
-Este projeto está licenciado sob a [Licença MIT](link-para-licenca).
+Este projeto está licenciado sob a [Licença MIT](https://github.com/PedrogamerY/Prompt/blob/main/LICENSE.txt)
 
 ## Contato
 
 Se você tiver perguntas ou sugestões, sinta-se à vontade para entrar em contato:
 
-- **Nome**: Seu Nome
-- **Email**: seuemail@example.com
-- **GitHub**: [Seu GitHub](link-para-seu-github)
+- **Nome**: Pedro Gomes
+- **Email**: pedromiguelferreiragomes69@gmail.com
+- **GitHub**: [Meu GitHub](https://github.com/PedrogamerY)
 
 ---
 
