@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prompt.Extras;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Prompt
 {
@@ -15,6 +17,7 @@ namespace Prompt
     {
         private readonly Form1 form;
         private readonly HistoryControl historyControl;
+        private SystemInfoForm systemInfoForm;
         private string currentDirectory;
         private string filePath;
         private bool isTaskRunning = false;
@@ -142,6 +145,28 @@ namespace Prompt
                     else
                     {
                         form.AppendColoredText(("Comando desconhecido: ") + command + Environment.NewLine, Color.Red);
+                    }
+                    break;
+
+                case "sysinfo":
+                    if (systemInfoForm == null || systemInfoForm.IsDisposed)
+                    {
+                        systemInfoForm = new SystemInfoForm();
+                        systemInfoForm.Owner = form;
+
+                        form.LocationChanged += (s, e) =>
+                        {
+                            systemInfoForm.Location = new Point(form.Location.X + form.Width + 5, form.Location.Y);
+                        };
+
+                        systemInfoForm.StartPosition = FormStartPosition.Manual;
+                        systemInfoForm.Location = new Point(form.Location.X + form.Width + 5, form.Location.Y);
+
+                        systemInfoForm.Show();
+                    }
+                    else
+                    {
+                        systemInfoForm.BringToFront(); // Se já estiver aberto, apenas traz à frente
                     }
                     break;
 
