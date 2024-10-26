@@ -9,7 +9,7 @@ using Prompt;
 public class CheckForUpdates
 {
     private readonly Form1 form;
-    private static readonly string currentVersion = "1.9";
+    private static readonly string currentVersion = "2.0";
     private static readonly string versionUrl = "https://pedrogamery.github.io/Prompt/version.json";
 
     public Form1 Form => form;
